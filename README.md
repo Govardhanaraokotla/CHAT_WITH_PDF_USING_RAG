@@ -59,11 +59,8 @@ Chat_With_PDF_2/
 ## 🖼️ Visual Demo
 ### Home Page
 🚀 **Upload your file here:**
-![Home Page](uploads/screenshots/home.png)
 
-
-
-
+![WhatsApp Image 2024-12-19 at 21 45 01_14d619b4](https://github.com/user-attachments/assets/bb558aad-f74c-44c2-8b33-1f52da23dd17)
 
 ---
 
