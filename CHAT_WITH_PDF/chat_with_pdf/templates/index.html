@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📄 Chat with Your PDF</title>
+    <style>
+        /* General Page Styles */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            background: linear-gradient(to right, #6a11cb, #2575fc);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            background-color: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: slideDown 1s ease-out;
+        }
+
+        .navbar a {
+            text-decoration: none;
+            color: #333;
+            font-weight: bold;
+            margin: 0 15px;
+            transition: color 0.3s;
+        }
+
+        .navbar a:hover {
+            color: #6a11cb;
+        }
+
+        /* Hero Section */
+        .hero {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 80px 20px;
+            color: #fff;
+            position: relative;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, rgba(106, 17, 203, 0.8), rgba(37, 117, 252, 0.8));
+            z-index: -1;
+            clip-path: polygon(0 0, 100% 0, 100% 75%, 0 100%);
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            color: #fff;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 40px;
+            color: rgba(255, 255, 255, 0.9);
+            animation: fadeIn 2s ease-in;
+        }
+
+        /* Upload Section */
+        .upload-box {
+            background: #fff;
+            border-radius: 15px;
+            padding: 40px;
+            width: 100%;
+            max-width: 600px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+            animation: zoomIn 1s ease;
+        }
+
+        .upload-box input[type="file"] {
+            margin-bottom: 20px;
+            padding: 15px;
+            text-align: center;
+            border: 2px dashed #6a11cb;
+            background-color: #f9f9ff;
+            color: #6a11cb;
+            font-size: 1rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .upload-box input[type="file"]:hover {
+            background-color: #e9e9ff;
+            border-color: #2575fc;
+        }
+
+        .upload-box input[type="text"] {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            padding: 15px;
+            font-size: 1rem;
+            width: 100%;
+            max-width: 500px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .upload-box input[type="text"]:hover {
+            border-color: #6a11cb;
+            box-shadow: 0 0 10px rgba(106, 17, 203, 0.5);
+        }
+
+        .upload-box button {
+            margin-top: 20px;
+            background: linear-gradient(90deg, #6a11cb, #2575fc);
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+        }
+
+        .upload-box button:hover {
+            background: linear-gradient(90deg, #2575fc, #6a11cb);
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(106, 17, 203, 0.5);
+        }
+
+        /* Results Section */
+        .results {
+            margin-top: 40px;
+            padding: 20px;
+            background: #fefefe;
+            border: 1px solid #ddd;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .results h3 {
+            margin-bottom: 1rem;
+            color: #333;
+            font-size: 1.5rem;
+        }
+
+        .results ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .results li {
+            background: #f7f7f7;
+            padding: 12px;
+            margin: 10px 0;
+            border-radius: 10px;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+            animation: slideUp 0.5s ease;
+        }
+
+        .results li:hover {
+            background: #e8f4ff;
+            transform: scale(1.02);
+            transition: all 0.3s ease;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            padding: 20px 0;
+            background: #333;
+            color: #fff;
+            font-size: 0.9rem;
+        }
+
+        footer a {
+            color: #6a11cb;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Animations */
+        @keyframes slideDown {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes zoomIn {
+            from {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <div class="navbar">
+        <div><a href="#">📄 ChatPDF</a></div>
+        <div>
+            <a href="#">Home</a>
+            <a href="#">How it Works</a>
+            <a href="#">FAQs</a>
+            <a href="#">Contact</a>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <div class="hero">
+        <h1>📄 Chat with Your PDF</h1>
+        <p>Upload your PDF and get precise answers powered by AI.</p>
+        <div class="upload-box">
+            <form method="POST" enctype="multipart/form-data">
+                <input type="file" name="file" required>
+                <input type="text" name="query" placeholder="What do you want to know?" required>
+                <button type="submit">🚀 Ask Now</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results Section -->
+    {% if results %}
+    <div class="results">
+        <h3>📚 Results:</h3>
+        <ul>
+            {% for result in results %}
+            <li>🔍 {{ result }}</li>
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+
+    <!-- Footer -->
+    <footer>
+        Built with ❤️ by <a href="#">Govardhanarao Kotla</a>
+    </footer>
+</body>
+</html>
