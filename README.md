@@ -1,6 +1,6 @@
 ---
 
-# 💬 Chat with PDF Using RAG 
+# 💬 Chat with PDF Using RAG
 
 Interact with your PDF documents like never before! **Chat with PDF 2** makes it easy to upload, process, and query PDFs with the power of natural language processing and semantic search.
 
